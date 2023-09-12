@@ -40,26 +40,31 @@ input {
 }
 workflow {
   steps = *scale *merge
+    .short_caption = Workflow steps
     .help = "Option to control either full reduction (steps=scale+merge) or just"
             "merging already scaled data (steps=merge)."
     .type=choice(multi=True)
-     .expert_level=2
+    .expert_level=2
 }
 grouping = None
-  .type = str
+  .type = path
+  .short_caption = Grouping .yml file
   .help = "Path to a .yml file defining grouping structure during processing"
 multiprocessing.nproc = Auto
   .type = int
   .expert_level = 1
 batch_size = None
   .type = int
+  .short_caption = Batch size
   .help = "An alias for reduction_batch_size"
   .expert_level = 1
 d_min = None
   .type = float
+  .short_caption = High resolution cutoff
   .expert_level = 1
 dose_series_repeat = None
   .type = int(value_min=2)
+  .short_caption = Dose series - number of repeated measurements at each point
   .expert_level = 2
   .help = "This option allows the user to specify that the data is a dose series"
           "by providing the number of repeated measurements at each point. i.e. it"
@@ -72,21 +77,27 @@ data_reduction_phil_str = (
     """
 reduction_batch_size=1000
   .type = int
+  .short_caption = Batch size
   .help = "The minimum batch size for consistent reindexing of data with cosym."
   .expert_level=2
 reference = None
   .type = path
+  .short_caption = Reference model or intensities
   .help = "A reference to use for scaling + indexing ambiguity resolution."
           "Can be a model pdb/cif file or a cif/mtz data file contaning"
           "intensity information."
   .expert_level = 1
 partiality_threshold = 0.25
   .type = float
+  .short_caption = Partiality threshold
   .help = "Filter out reflections below this partiality in data reduction."
 %s
-clustering {
+clustering
+  .short_caption = Clustering
+{
   threshold=None
     .type = float(value_min=0, allow_none=True)
+    .short_caption = Threshold
     .help = "If no data has previously been reduced, then unit cell clustering"
             "is performed. This threshold is the value at which the dendrogram"
             "will be split in dials.cluster_unit_cell (the default value there"
@@ -99,39 +110,50 @@ clustering {
     .expert_level = 2
   absolute_angle_tolerance = 1.0
     .type = float(value_min=0, allow_none=True)
+    .short_caption = Absolute angle tolerance
     .help = "Filter the integrated data based on the median unit cell angles"
             "and this tolerance. If set to None/0, filtering will be skipped."
     .expert_level = 2
   absolute_length_tolerance = 1.0
     .type = float(value_min=0, allow_none=True)
+    .short_caption = Absolute length tolerance
     .help = "Filters the integrated data based on the median unit cell lengths"
             "and this tolerance. If set to None/0, filtering will be skipped."
     .expert_level = 2
   central_unit_cell = None
     .type = unit_cell
+    .short_caption = Central unit cell
     .help = "Filter the integrated data based on the tolerances about these cell"
             "parameters, rather than the median cell."
     .expert_level = 2
 }
-symmetry {
+symmetry
+  .short_caption = "Symmetry"
+{
   space_group = None
     .type = space_group
+    .short_caption = "Space group"
     .expert_level = 2
   lattice_symmetry_max_delta = 0.5
     .type = float
+    .short_caption = "Tolerance for lattice symmetry analysis"
     .help = "Tolerance for lattice symmetry analysis, used for example when"
             "determining possible symmetries for ambiguity resolution."
     .expert_level=3
   phil = None
     .type = path
+    .short_caption = "Phil options file for dials.cosym"
     .help = "Phil options file to use for symmetry analysis with dials.cosym. "
             "Parameters defined in the xia2.ssx phil scope will take precedent"
             "over identical options defined in the phil file."
     .expert_level = 3
 }
-scaling {
+scaling
+  .short_caption = "Scaling"
+{
   anomalous = False
     .type = bool
+    .short_caption = Anomalous
     .help = "If True, keep anomalous pairs separate during scaling."
     .expert_level = 1
   model = None
@@ -140,6 +162,7 @@ scaling {
     .expert_level = 2
   phil = None
     .type = path
+    .short_caption = "Phil options file for dials.scale"
     .help = "Phil options file to use for dials.scale. "
             "Parameters defined in the xia2.ssx phil scope will take precedent"
             "over identical options defined in the phil file."
